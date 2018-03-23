@@ -12,6 +12,7 @@ public class EnemyBehavior : MonoBehaviour {
 
 	private float projectileSpeed = 5f;
 	private ScoreKeeper scoreKeeper;
+	private Vector3 closerSoundOffset = new Vector3(0f, 0f, -9.5f);
 
 	void Start() {
 		scoreKeeper = GameObject.FindObjectOfType<ScoreKeeper>();
@@ -31,13 +32,13 @@ public class EnemyBehavior : MonoBehaviour {
 	void Die() {
 		Destroy(gameObject);
 		scoreKeeper.UpdateScore(scoreValue);
-		AudioSource.PlayClipAtPoint(deathSound, transform.position, 1f);
+		AudioSource.PlayClipAtPoint(deathSound, transform.position + closerSoundOffset, 1f);
 	}
 
 	void FireProjectile() {
 		GameObject beam = Instantiate(Projectile, transform.position, Quaternion.identity);
 		beam.GetComponent<Rigidbody2D>().velocity = new Vector3(0f, -projectileSpeed, 0f);
-		AudioSource.PlayClipAtPoint(projectileSound, transform.position, 1f);
+		AudioSource.PlayClipAtPoint(projectileSound, transform.position + closerSoundOffset, 1f);
 	}
 
 	void Update() {

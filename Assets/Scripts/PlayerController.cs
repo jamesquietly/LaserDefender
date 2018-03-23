@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour {
 	void FireProjectile() {
 		GameObject beam = Instantiate(projectile, transform.position, Quaternion.identity);
 		beam.GetComponent<Rigidbody2D>().velocity = new Vector3(0f, projectileSpeed, 0f);
-		AudioSource.PlayClipAtPoint(projectileSound, transform.position, 1f);
+		Vector3 soundPos = transform.position + new Vector3(0f, 0f, -9.5f);
+		AudioSource.PlayClipAtPoint(projectileSound, soundPos, 1f);
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
@@ -36,9 +37,15 @@ public class PlayerController : MonoBehaviour {
 			health -= missile.GetDamage();
 			missile.Hit();
 			if(health <= 0) {
-				Destroy(gameObject);
+				Die();
 			}
 		}
+	}
+
+	void Die() {
+		LevelManager manager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		manager.LoadLevel("Win");
+		Destroy(gameObject);
 	}
 	
 	// Update is called once per frame
