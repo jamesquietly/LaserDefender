@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour {
 	float xMin;
 	float xMax;
 
+	private HealthKeeper healthKeeper;
+
 	// Use this for initialization
 	void Start () {
 		float distance = transform.position.z - Camera.main.transform.position.z;
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour {
 		Vector3 rightMost = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, distance));
 		xMin = leftMost.x + padding;
 		xMax = rightMost.x - padding;
+		healthKeeper = GameObject.FindObjectOfType<HealthKeeper>();
 	}
 
 	void FireProjectile() {
@@ -35,6 +38,7 @@ public class PlayerController : MonoBehaviour {
 		Projectile missile = collider.gameObject.GetComponent<Projectile>();
 		if(missile) {
 			health -= missile.GetDamage();
+			healthKeeper.UpdateHealth(health);
 			missile.Hit();
 			if(health <= 0) {
 				Die();
@@ -46,6 +50,7 @@ public class PlayerController : MonoBehaviour {
 		LevelManager manager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		manager.LoadLevel("Win");
 		Destroy(gameObject);
+		HealthKeeper.Reset();
 	}
 	
 	// Update is called once per frame

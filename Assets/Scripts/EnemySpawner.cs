@@ -68,7 +68,6 @@ public class EnemySpawner : MonoBehaviour {
 		}
 
 		if(AllMembersDead()) {
-			Debug.Log("Empty formation");
 			SpawnUntilFull();
 		}
 	}
